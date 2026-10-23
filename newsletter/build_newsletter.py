@@ -324,7 +324,19 @@ def brevo_request(api_key, path, payload):
         return json.loads(text) if text else {}
 
 
+def brevo_subscriber_count(cfg):
+    req = urllib.request.Request(
+        f"https://api.brevo.com/v3/contacts/lists/{int(cfg['brevo_list'])}",
+        headers={"api-key": cfg["brevo_key"], "accept": "application/json"},
+    )
+    with urllib.request.urlopen(req, timeout=30) as resp:
+        data = json.loads(resp.read().decode("utf-8"))
+    return int(data.get("uniqueSubscribers", data.get("totalSubscribers", 0)) or 0)
+
+
 def send_brevo(cfg, subject, email_html):
+    if brevo_subscriber_count(cfg) == 0:
+        return None
     campaign = brevo_request(cfg["brevo_key"], "/emailCampaigns", {
         "name": f"grant-radar {TODAY.isoformat()}",
         "subject": subject,
@@ -420,7 +432,10 @@ def main():
 
     if cfg["send"]:
         cid = send_brevo(cfg, subject, email_html)
-        print(f"발송 완료: Brevo 캠페인 #{cid}")
+        if cid is None:
+            print("아직 구독자가 없어 이메일 발송은 건너뛰었어요. (웹 아카이브는 생성됨)")
+        else:
+            print(f"발송 완료: Brevo 캠페인 #{cid}")
     else:
         print("발송 키가 없거나 시험 모드라 이메일은 보내지 않았어요.")
 
