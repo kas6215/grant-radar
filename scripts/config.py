@@ -8,7 +8,7 @@ BLOG_NAME = "킨포클라우드 개발노트"
 BLOG_URL = "https://www.kinfocloud.co.kr"
 
 # 텔레그램 채널 공개 주소 (예: https://t.me/kinfo_grants). 비워두면 구독 버튼 숨김
-TELEGRAM_CHANNEL_URL = ""
+TELEGRAM_CHANNEL_URL = "https://t.me/kinfo_grants"
 
 # 애드센스 게시자 ID (블로그에 이미 쓰고 있는 것과 동일)
 ADSENSE_CLIENT = "ca-pub-8722569428171346"
