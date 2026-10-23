@@ -1,0 +1,7 @@
+[
+  {"pbanc_sn": "S1001", "biz_pbanc_nm": "2026년 예비창업패키지 추가 모집", "pbanc_ntrp_nm": "창업진흥원", "pbanc_rcpt_bgng_dt": "20261015", "pbanc_rcpt_end_dt": "20261027", "detl_pg_url": "https://www.k-startup.go.kr/", "supt_regin": "전국", "supt_biz_clsfc": "사업화", "aply_trgt": "예비창업자", "rcrt_prgs_yn": "Y"},
+  {"pbanc_sn": "S1002", "biz_pbanc_nm": "서울 청년창업센터 입주기업 모집", "pbanc_ntrp_nm": "서울특별시", "pbanc_rcpt_bgng_dt": "20261020", "pbanc_rcpt_end_dt": "20261110", "detl_pg_url": "https://www.k-startup.go.kr/", "supt_regin": "서울", "supt_biz_clsfc": "시설·공간·보육", "aply_trgt": "만 39세 이하 창업 3년 이내 기업", "rcrt_prgs_yn": "Y"},
+  {"pbanc_sn": "S1003", "biz_pbanc_nm": "AI 바우처 지원사업 수요기업 모집", "pbanc_ntrp_nm": "정보통신산업진흥원", "pbanc_rcpt_bgng_dt": "20261021", "pbanc_rcpt_end_dt": "20261030", "detl_pg_url": "https://www.k-startup.go.kr/", "supt_regin": "전국", "supt_biz_clsfc": "기술개발(R&D)", "aply_trgt": "중소·벤처기업", "rcrt_prgs_yn": "Y"},
+  {"pbanc_sn": "S1004", "biz_pbanc_nm": "로컬크리에이터 육성사업", "pbanc_ntrp_nm": "중소벤처기업부", "pbanc_rcpt_bgng_dt": "20261001", "pbanc_rcpt_end_dt": "20261205", "detl_pg_url": "https://www.k-startup.go.kr/", "supt_regin": "전국", "supt_biz_clsfc": "사업화", "aply_trgt": "지역 기반 창업자", "rcrt_prgs_yn": "Y"},
+  {"pbanc_sn": "S1005", "biz_pbanc_nm": "이미 마감된 공고 (제외되어야 함)", "pbanc_ntrp_nm": "테스트기관", "pbanc_rcpt_bgng_dt": "20260901", "pbanc_rcpt_end_dt": "20261001", "detl_pg_url": "https://www.k-startup.go.kr/", "rcrt_prgs_yn": "Y"}
+]
