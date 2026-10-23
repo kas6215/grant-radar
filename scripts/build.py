@@ -122,7 +122,7 @@ def foot():
     return f"""<footer><div class="wrap">
 <p>공고 정보는 창업진흥원 K-Startup 공공데이터(공공데이터포털)를 매일 자동으로 받아 정리한 것입니다.
 신청 전 반드시 K-Startup 원문 공고에서 자격 요건과 마감일을 확인하세요.</p>
-<p>운영: <a href="{e(config.BLOG_URL)}">{e(config.BLOG_NAME)}</a> · <a href="/feed.xml">RSS</a></p>
+<p>운영: <a href="{e(config.BLOG_URL)}">{e(config.BLOG_NAME)}</a> · <a href="/newsletter/">주간 이메일 브리핑</a> · <a href="/feed.xml">RSS</a></p>
 </div></footer></body></html>"""
 
 
@@ -158,9 +158,11 @@ def build_index(items, updated):
     regions = sorted({x["region"] for x in items if x["region"]})
     cats = sorted({x["category"] for x in items if x["category"]})
     opt = lambda vals: "".join(f'<option value="{e(v)}">{e(v)}</option>' for v in vals)  # noqa: E731
-    cta = (f'<div class="cta"><span>새 공고와 마감 임박 알림을 텔레그램으로 받아보세요.</span>'
-           f'<a class="btn" href="{e(config.TELEGRAM_CHANNEL_URL)}">텔레그램 구독</a></div>'
-           if config.TELEGRAM_CHANNEL_URL else "")
+    tg = (f'<a class="btn" href="{e(config.TELEGRAM_CHANNEL_URL)}">텔레그램</a>'
+          if config.TELEGRAM_CHANNEL_URL else "")
+    cta = (f'<div class="cta"><span>새 공고와 마감 임박 공고를 매주 월요일 이메일로 무료로 받아보세요.</span>'
+           f'<span style="display:flex;gap:8px;flex-wrap:wrap">'
+           f'<a class="btn" href="/newsletter/">이메일 구독</a>{tg}</span></div>')
     desc = f"지금 모집 중인 정부 창업 지원사업 {len(items)}건. AI·SW·1인 창업 관련 공고를 매일 자동으로 정리합니다."
     html = head(f"{config.SITE_NAME} - {config.SITE_TAGLINE}", desc, "/") + f"""
 <main class="wrap"><section class="hero"><h1>{e(config.SITE_TAGLINE)}</h1>
@@ -222,7 +224,7 @@ def build_detail(it, related):
 
 
 def build_feeds(items, archive):
-    urls = [f"{config.SITE_URL}/"] + [f"{config.SITE_URL}/p/{i}.html" for i in archive]
+    urls = [f"{config.SITE_URL}/", f"{config.SITE_URL}/newsletter/"] + [f"{config.SITE_URL}/p/{i}.html" for i in archive]
     sm = "".join(f"<url><loc>{e(u)}</loc></url>" for u in urls)
     (OUT / "sitemap.xml").write_text(
         f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{sm}</urlset>',
