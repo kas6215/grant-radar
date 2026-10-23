@@ -1,0 +1,63 @@
+name: 주간 지원사업 뉴스레터
+
+on:
+  schedule:
+    # 매주 월요일 오전 8시 17분(한국시간) = 일요일 23:17 UTC
+    - cron: "17 23 * * 0"
+  workflow_dispatch: {}   # Actions 탭에서 수동 실행 가능
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: weekly-newsletter
+  cancel-in-progress: false
+
+jobs:
+  build-and-send:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: 뉴스레터 생성 및 발송
+        env:
+          KSTARTUP_SERVICE_KEY: ${{ secrets.DATA_GO_KR_API_KEY }}   # 기존 공고 수집용 키 재사용
+          BREVO_API_KEY: ${{ secrets.BREVO_API_KEY }}
+          BREVO_LIST_ID: ${{ vars.BREVO_LIST_ID || '3' }}
+          SENDER_EMAIL: ${{ vars.SENDER_EMAIL || 'news@kinfocloud.co.kr' }}
+          SENDER_NAME: 그랜트 레이더
+          SITE_URL: ${{ vars.SITE_URL || 'https://grants.kinfocloud.co.kr' }}
+        run: python newsletter/build_newsletter.py
+
+      - name: 결과 저장 (아카이브·RSS·상태)
+        run: |
+          git config user.name "grant-radar-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add newsletter/
+          git diff --cached --quiet || git commit -m "뉴스레터 $(date +%Y-%m-%d)"
+          git push
+
+      # 실패하면 저장소에 이슈를 열어 메일 알림이 오게 함 (같은 이슈가 열려 있으면 댓글만 추가)
+      - name: 실패 알림
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = "⚠️ 주간 뉴스레터 실행 실패";
+            const run = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const { data: open } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner, repo: context.repo.repo, state: "open", per_page: 50 });
+            const existing = open.find(i => i.title === title);
+            const body = `실행 기록: ${run}\n\n로그의 '설정 확인 필요' 문구를 확인하세요. 대부분 API 키 만료나 공고 사이트 응답 형식 변경입니다.`;
+            if (existing) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner, repo: context.repo.repo, issue_number: existing.number, body });
+            } else {
+              await github.rest.issues.create({
+                owner: context.repo.owner, repo: context.repo.repo, title, body });
+            }
