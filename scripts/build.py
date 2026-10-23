@@ -113,7 +113,7 @@ def head(title, desc, path, extra=""):
 <meta property="og:url" content="{e(canonical)}"><meta property="og:type" content="website"><meta property="og:locale" content="ko_KR">
 <link rel="alternate" type="application/rss+xml" title="{e(config.SITE_NAME)}" href="/feed.xml">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📡</text></svg>">
-<style>{CSS}</style>{ads}{extra}</head><body>
+<style>{CSS}</style>{ads}{extra}{getattr(config, "HEAD_EXTRA", "")}</head><body>
 <header class="top"><div class="wrap"><a class="logo" href="/">📡 <span>{e(config.SITE_NAME)}</span></a>
 <a class="toplink" href="{e(config.BLOG_URL)}">{e(config.BLOG_NAME)} →</a></div></header>"""
 
