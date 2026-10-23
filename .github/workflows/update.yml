@@ -33,7 +33,7 @@ jobs:
         run: python scripts/fetch.py
 
       - name: 사이트 생성
-        run: python scripts/build.py
+        run: python scripts/build.py && (mkdir -p site/newsletter; cp -r newsletter/index.html newsletter/feed.xml newsletter/issues site/newsletter/ 2>/dev/null; true)
 
       - name: 데이터 저장 (신규 판별용 기록)
         run: |
